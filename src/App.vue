@@ -9,6 +9,9 @@
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {
+  // Check PW strecngth: 'owasp-password-strength-test'
+  // var result = owaspPasswordStrengthTest.test('correct horse battery staple');
+
   name: 'app',
   components: {
     HelloWorld
