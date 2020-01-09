@@ -5,9 +5,13 @@ const jwt = require('jsonwebtoken');
 const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
+    username: String,
+
     email: String,
+    // password
     hash: String,
     salt: String,
+    pepperID: Number,
 });
 
 UsersSchema.methods.setPassword = function(password) {
