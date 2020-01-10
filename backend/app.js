@@ -7,14 +7,15 @@ const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
 const https = require('https');
 const fs = require('fs');
-global.appRoot = require('approot')(__dirname);
 const crypto = require('crypto');
+const appRoot = require('app-root-path');
 
 //Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
 
 //Configure isProduction variable
 const isProduction = process.env.NODE_ENV === 'production';
+module.exports = isProduction;
 
 //Initiate our app
 const app = express();
@@ -36,7 +37,7 @@ mongoose.connect('mongodb://localhost/passport-tutorial');
 mongoose.set('debug', true);
 
 //Models & routes
-require('./models/Users');
+require('./models/User');
 require('./config/passport');
 app.use(require('./routes'));
 
@@ -68,8 +69,8 @@ app.use((err, req, res, next) => {
 let port = 8000;
 if (isProduction) {
     const options = {
-        key: fs.readFileSync(appRoot() + '/config/cert/ryans-key.pem'),
-        cert: fs.readFileSync(appRoot() + '/config/cert/ryans-cert.pem'),
+        key: fs.readFileSync(appRoot + '/config/cert/ryans-key.pem'),
+        cert: fs.readFileSync(appRoot + '/config/cert/ryans-cert.pem'),
         secureOptions: crypto.SSL_OP_NO_SSLv2 | crypto.SSL_OP_NO_SSLv3 | crypto.SSL_OP_NO_TLSv1 | crypto.SSL_OP_NO_TLSv1_1,
         honorCipherOrder: true
     };

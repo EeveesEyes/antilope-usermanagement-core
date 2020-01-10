@@ -1,6 +1,7 @@
 const fs = require('fs');
+const appRoot = require('app-root-path');
 
-let appconfig = fs.readFileSync(appRoot() + '/config/appconfig.json');
+let appconfig = fs.readFileSync(appRoot + '/config/appconfig.json');
 let config = JSON.parse(appconfig);
 
 let latestPepperID = Math.max(...Object.keys(config["peppers"]).map(function (item) {

@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "approot": "^0.2.1",
+    "app-root-path": "^3.0.0",
     "body-parser": "latest",
     "cors": "^2.8.5",
     "errorhandler": "^1.5.1",
