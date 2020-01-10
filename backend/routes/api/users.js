@@ -39,36 +39,52 @@ function isCompromised(password) {
 //POST new user route (optional, everyone has access)
 router.post('/', auth.optional, (req, res, next) => {
     const {body: {user}} = req;
-
     if (!user.email) {
-        return res.status(400).json({
-            errors: {
-                email: 'is required',
-            },
-        });
-    } else if (Users.findOne({email: user.email})) {
-        // Email is already known
-        return res.status(400).json({
-            errors: {
-                email: 'is duplicate',
-            },
-        });
+        return res.status(400).json({errors: {email: 'is required'}});
     }
 
-    // Check password
-    let result = owasp.test(user.password);
-    if (!result.strong) {
-        return res.status(400).json({
-            errors: result.errors
-        });
-    }
+    let findUserPromise = () => (
+        new Promise((resolve, reject) => {
+            Users.findOne({email: user.email}, (err, data) => {
+                err ? reject(err) : resolve(data);
+            });
+        }));
 
-    const finalUser = new Users(user);
+    let callFindUserPromise = async () => {
+        let result_user = {json: await (findUserPromise())};
+        let result = {};
+        if (result_user.json) {
+            // Email is already known
+            result = {status: 400, json: {errors: {email: 'is duplicate'}}}
+            //return {status: 400, errors: {email: 'is duplicate'}};
+            //res.status(400).json({errors: {email: 'is duplicate'}});
+        } else {
+            result = {status: 200, json: {}};
+        }
+        return result;
+    };
 
-    finalUser.setPassword(user.password);
+    callFindUserPromise().then(function (result) {
+        // Check password
+        let validationResult = owasp.test(user.password);
+        if (!validationResult.strong) {
+            result = {status: 400, json: {errors: validationResult.errors}};
+        }
+        if (result["status"] === 200) {
+            const finalUser = new Users(user);
+            finalUser.setPassword(user.password);
+            return finalUser.save()
+                .then(() => {
+                    result.json = {user: finalUser.toAuthJSON()};
+                    res.status(result["status"]).json(result["json"]);
+                    return result;
+                })
+        } else {
+            res.status(result["status"]).json(result["json"]);
+        }
+    });
 
-    return finalUser.save()
-        .then(() => res.json({user: finalUser.toAuthJSON()}));
+
 });
 
 //POST login route (optional, everyone has access)

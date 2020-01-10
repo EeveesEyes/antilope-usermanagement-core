@@ -66,7 +66,7 @@ app.use((err, req, res, next) => {
 });
 
 let port = 8000;
-if(isProduction) {
+if (isProduction) {
     const options = {
         key: fs.readFileSync(appRoot() + '/config/cert/ryans-key.pem'),
         cert: fs.readFileSync(appRoot() + '/config/cert/ryans-cert.pem'),

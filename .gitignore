@@ -1,7 +1,6 @@
 .DS_Store
 node_modules
 /dist
-.idea
 
 # local env files
 .env.local
@@ -20,3 +19,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Bachend
+/backend/config/appconfig.json
