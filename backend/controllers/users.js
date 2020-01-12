@@ -55,6 +55,8 @@ module.exports.createUser = (req, res) => {
 
 module.exports.login = (req, res, next) => {
     const {body: {user}} = req;
+    // eslint-disable-next-line no-console
+    console.log(user);
     if (!user.email) {
         return res.status(400).json({
             errors: {
