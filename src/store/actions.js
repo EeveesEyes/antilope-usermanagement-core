@@ -10,8 +10,6 @@ export default {
                 {json: {user: {email: email, password: password}}});
             return response.json();
         } catch (e) {
-            // eslint-disable-next-line no-console
-            console.log('token error', e)
             if (e.message === 'Bad Request') {
                 throw e;
             } else {
@@ -23,12 +21,8 @@ export default {
     async login({dispatch, commit}, data) {
         let result = await dispatch('getToken', {email: data.email, password: data.password})
             .catch((e) => {
-                // eslint-disable-next-line no-console
-                console.log('login error', e)
                 throw e
             });
-        // eslint-disable-next-line no-console
-        console.log('payload', result);
         commit('setToken', result.user);
     }
 }

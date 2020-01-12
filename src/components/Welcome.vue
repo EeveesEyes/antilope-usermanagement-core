@@ -8,10 +8,7 @@
             >
                 Register
             </b-button>
-
-            <b-button @click="login" variant="primary">
-                Login
-            </b-button>
+            <b-button v-b-modal.modal-login>Login</b-button>
         </b-jumbotron>
 
     </div>
