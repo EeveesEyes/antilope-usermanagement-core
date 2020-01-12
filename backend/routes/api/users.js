@@ -1,8 +1,5 @@
-const mongoose = require('mongoose');
-const passport = require('passport');
 const router = require('express').Router();
 const auth = require('../../controllers/auth');
-const Users = mongoose.model('Users');
 const user_controller = require('../../controllers/users');
 const crypto = require('crypto');
 const https = require('https');
@@ -31,6 +28,7 @@ function isCompromised(password) {
         });
 
     }).on("error", (err) => {
+        // eslint-disable-next-line no-console
         console.log("Error: " + err.message);
     });
     return isCompromised;

@@ -1,10 +1,9 @@
 const owasp = require('owasp-password-strength-test');
 const appRoot = require('app-root-path');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 const isProduction = require(appRoot + '/app').isProduction;
-/// Routing targets for users.
-const User = require(appRoot + '/models/User.js').userModel;
 
 const User_collection = mongoose.model('Users');
 
@@ -23,7 +22,7 @@ module.exports.createUser = (req, res) => {
 
     let callFindUserPromise = async () => {
         let result_user = {json: await (findUserPromise())};
-        let result = {};
+        let result;
         if (result_user.json) {
             // Email is already known
             result = {status: 400, json: {errors: {email: 'is duplicate'}}}
@@ -56,7 +55,6 @@ module.exports.createUser = (req, res) => {
 
 module.exports.login = (req, res, next) => {
     const {body: {user}} = req;
-
     if (!user.email) {
         return res.status(400).json({
             errors: {
@@ -85,7 +83,7 @@ module.exports.login = (req, res, next) => {
             return res.json({user: user.toAuthJSON()});
         }
 
-        return status(400).info;
+        return res.status(400).json(info)
     })(req, res, next);
 };
 
