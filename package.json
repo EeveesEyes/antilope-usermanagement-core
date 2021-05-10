@@ -13,7 +13,7 @@
     "bootstrap-vue": "^2.2.0",
     "core-js": "^3.4.4",
     "ky": "^0.16.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "vue": "^2.6.10",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.1.3",
